@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ScrollView, Alert, StyleSheet} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { datasource, getCardImage } from './Data';
+import CardPreview from './components/CardPreview';
 
 export default function Edit({ navigation, route }) {
 
   // Receive the selected Pokemon details from Home
   const { index, type, name, number } = route.params;
 
-  // Prefill the form using the received values
+  // Prefill fields with the selected Pokemon's details
   const [pokemonName, setPokemonName] = useState(name);
   const [cardNumber, setCardNumber] = useState(number);
   const [element, setElement] = useState(type);
@@ -26,7 +27,7 @@ export default function Edit({ navigation, route }) {
     ) {
       Alert.alert(
         'Invalid Input',
-        'Please enter a Pokemon name and a valid card number.'
+        'Please enter a Pokémon name and a valid card number.'
       );
       return;
     }
@@ -53,9 +54,15 @@ export default function Edit({ navigation, route }) {
               section => section.title === element
             );
 
-            if (!originalSection || !newSection ||
-                !originalSection.data[index]) {
-              Alert.alert('Error', 'Pokémon card not found.');
+            if (
+              !originalSection ||
+              !newSection ||
+              !originalSection.data[index]
+            ) {
+              Alert.alert(
+                'Error',
+                'Pokémon card not found.'
+              );
               return;
             }
 
@@ -103,7 +110,10 @@ export default function Edit({ navigation, route }) {
             );
 
             if (!section || !section.data[index]) {
-              Alert.alert('Error', 'Pokémon card not found.');
+              Alert.alert(
+                'Error',
+                'Pokémon card not found.'
+              );
               return;
             }
 
@@ -135,34 +145,35 @@ export default function Edit({ navigation, route }) {
 
   return (
     <View style={styles.screen}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={cancelEdit}
+          >
+            <FontAwesome6
+              name="arrow-left"
+              size={18}
+              color="#25324B"
+            />
+          </TouchableOpacity>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={cancelEdit}
-        >
-          <FontAwesome6
-            name="arrow-left"
-            size={18}
-            color="#25324B"
-          />
-        </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text style={styles.title}>
+              Edit Pokémon
+            </Text>
 
-        <View>
-          <Text style={styles.title}>
-            Edit Pokémon
-          </Text>
-
-          <Text style={styles.subtitle}>
-            Update or remove a card
-          </Text>
+            <Text style={styles.subtitle}>
+              Update or remove a card
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Form */}
-      <View style={styles.form}>
-
+        {/* Form */}
         <Text style={styles.label}>
           Pokémon Name
         </Text>
@@ -206,7 +217,13 @@ export default function Edit({ navigation, route }) {
           </Picker>
         </View>
 
-        {/* Save changes */}
+        {/* Preview updates with the card number */}
+        <CardPreview
+          key={cardNumber.trim()}
+          number={cardNumber}
+        />
+
+        {/* Save */}
         <TouchableOpacity
           style={styles.saveButton}
           onPress={saveChanges}
@@ -216,7 +233,7 @@ export default function Edit({ navigation, route }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Delete Pokemon */}
+        {/* Delete */}
         <TouchableOpacity
           style={styles.deleteButton}
           onPress={deletePokemon}
@@ -231,8 +248,7 @@ export default function Edit({ navigation, route }) {
             DELETE POKÉMON
           </Text>
         </TouchableOpacity>
-
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -240,20 +256,26 @@ export default function Edit({ navigation, route }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 55,
     backgroundColor: '#F5F7FC',
+  },
+  content: {
+    paddingTop: 55,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
     marginBottom: 25,
   },
   backButton: {
     padding: 12,
-    marginRight: 10,
+    marginRight: 12,
     backgroundColor: '#E5EDFF',
     borderRadius: 10,
+  },
+  headerText: {
+    flex: 1,
   },
   title: {
     fontSize: 24,
@@ -264,9 +286,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#748096',
     marginTop: 5,
-  },
-  form: {
-    paddingHorizontal: 20,
   },
   label: {
     fontSize: 15,
@@ -289,7 +308,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D8DEEA',
     borderRadius: 10,
-    marginBottom: 25,
+    marginBottom: 20,
     overflow: 'hidden',
   },
   saveButton: {
@@ -311,8 +330,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteText: {
     fontSize: 15,

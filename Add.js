@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, ScrollView, Alert, StyleSheet} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { datasource, getCardImage } from './Data';
+import CardPreview from './components/CardPreview';
 
 export default function Add({ navigation }) {
 
@@ -24,7 +25,7 @@ export default function Add({ navigation }) {
     ) {
       Alert.alert(
         'Invalid Input',
-        'Please enter a Pokemon name and a valid card number.'
+        'Please enter a Pokémon name and a valid card number.'
       );
       return;
     }
@@ -47,7 +48,10 @@ export default function Add({ navigation }) {
             );
 
             if (!section) {
-              Alert.alert('Error', 'Element section not found.');
+              Alert.alert(
+                'Error',
+                'Element section not found.'
+              );
               return;
             }
 
@@ -100,34 +104,35 @@ export default function Add({ navigation }) {
 
   return (
     <View style={styles.screen}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
+        {/* Header */}
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.backButton}
+            onPress={cancelAdd}
+          >
+            <FontAwesome6
+              name="arrow-left"
+              size={18}
+              color="#25324B"
+            />
+          </TouchableOpacity>
 
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={cancelAdd}
-        >
-          <FontAwesome6
-            name="arrow-left"
-            size={18}
-            color="#25324B"
-          />
-        </TouchableOpacity>
+          <View style={styles.headerText}>
+            <Text style={styles.title}>
+              Add Pokémon
+            </Text>
 
-        <View>
-          <Text style={styles.title}>
-            Add Pokémon
-          </Text>
-
-          <Text style={styles.subtitle}>
-            Add a new card to your collection
-          </Text>
+            <Text style={styles.subtitle}>
+              Add a new card to your collection
+            </Text>
+          </View>
         </View>
-      </View>
 
-      {/* Form */}
-      <View style={styles.form}>
-
+        {/* Form */}
         <Text style={styles.label}>
           Pokémon Name
         </Text>
@@ -171,7 +176,13 @@ export default function Add({ navigation }) {
           </Picker>
         </View>
 
-        {/* Submit button */}
+        {/* Online card preview */}
+        <CardPreview
+          key={number.trim()}
+          number={number}
+        />
+
+        {/* Submit */}
         <TouchableOpacity
           style={styles.submitButton}
           onPress={addPokemon}
@@ -181,7 +192,7 @@ export default function Add({ navigation }) {
           </Text>
         </TouchableOpacity>
 
-        {/* Cancel button */}
+        {/* Cancel */}
         <TouchableOpacity
           style={styles.cancelButton}
           onPress={cancelAdd}
@@ -190,8 +201,7 @@ export default function Add({ navigation }) {
             CANCEL
           </Text>
         </TouchableOpacity>
-
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -199,20 +209,26 @@ export default function Add({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    paddingTop: 55,
     backgroundColor: '#F5F7FC',
+  },
+  content: {
+    paddingTop: 55,
+    paddingHorizontal: 20,
+    paddingBottom: 40,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
     marginBottom: 25,
   },
   backButton: {
     padding: 12,
-    marginRight: 10,
+    marginRight: 12,
     backgroundColor: '#E5EDFF',
     borderRadius: 10,
+  },
+  headerText: {
+    flex: 1,
   },
   title: {
     fontSize: 24,
@@ -223,9 +239,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#748096',
     marginTop: 5,
-  },
-  form: {
-    paddingHorizontal: 20,
   },
   label: {
     fontSize: 15,
@@ -240,15 +253,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 14,
     fontSize: 15,
-    marginBottom: 20,
     color: '#25324B',
+    marginBottom: 20,
   },
   pickerContainer: {
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#D8DEEA',
     borderRadius: 10,
-    marginBottom: 25,
+    marginBottom: 20,
     overflow: 'hidden',
   },
   submitButton: {
