@@ -1,4 +1,3 @@
-
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 
 export default function PokemonCard({ pokemon, onPress }) {
