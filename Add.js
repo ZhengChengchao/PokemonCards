@@ -173,8 +173,12 @@ export default function Add({ navigation }) {
               label="Fire"
               value="Fire"
             />
+            <Picker.Item
+              label="Water"
+              value="Water"
+            />
           </Picker>
-        </View>
+        </View> 
 
         {/* Online card preview */}
         <CardPreview

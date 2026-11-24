@@ -46,6 +46,26 @@ const datasource = [
       },
     ],
   },
+  {
+    title: 'Water',
+    icon: 'droplet',
+    bgColor: '#DCEEFF',
+    iconColor: '#3479A8',
+    data: [
+      {
+        key: '5',
+        name: 'Squirtle',
+        number: '7',
+        image: getCardImage('7'),
+      },
+      {
+        key: '6',
+        name: 'Psyduck',
+        number: '54',
+        image: getCardImage('54'),
+      },
+    ],
+  },
 ];
 
 export { datasource, getCardImage };

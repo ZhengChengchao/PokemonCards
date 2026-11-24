@@ -214,6 +214,10 @@ export default function Edit({ navigation, route }) {
               label="Fire"
               value="Fire"
             />
+            <Picker.Item
+              label="Water"
+              value="Water"
+            />
           </Picker>
         </View>
 
