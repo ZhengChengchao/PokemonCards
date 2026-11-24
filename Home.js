@@ -2,15 +2,13 @@ import {View, Text, SectionList, TouchableOpacity, StyleSheet, Alert} from 'reac
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import PokemonCard from './components/PokemonCard';
 import { datasource } from './Data';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function Home({navigation}) {
 
-  // Add Pokemon button (for next lesson)
+  // Add Pokemon button
   const handleAddPokemon = () => {
-    Alert.alert(
-      'Add Pokémon',
-      'This feature will be available in the next lesson.'
-    );
+    navigation.navigate('Add');
   };
 
   // Display Pokemon details
@@ -21,6 +19,13 @@ export default function Home({navigation}) {
     );
   };
 
+  const isFocused = useIsFocused();
+
+  const sections = datasource.map(section => ({
+    ...section,
+    data: [...section.data],
+  }));
+  
   // Display each Pokemon card
   const renderItem = ({ item }) => {
     return (
@@ -86,7 +91,7 @@ export default function Home({navigation}) {
       </TouchableOpacity>
 
       <SectionList
-        sections={datasource}
+        sections={sections}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         contentContainerStyle={styles.listContent}
