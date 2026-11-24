@@ -6,35 +6,31 @@ import { useIsFocused } from '@react-navigation/native';
 
 export default function Home({navigation}) {
 
-  // Add Pokemon button
+  // Add Pokemon button 
   const handleAddPokemon = () => {
     navigation.navigate('Add');
   };
 
-  // Display Pokemon details
-  const showDetails = (item) => {
-    Alert.alert(
-      item.name,
-      'Pokémon Card #' + item.number
-    );
-  };
-
-  const isFocused = useIsFocused();
+  // Refresh Home when returning from Add or Edit
+  useIsFocused();
 
   const sections = datasource.map(section => ({
     ...section,
     data: [...section.data],
   }));
-  
+
   // Display each Pokemon card
-  const renderItem = ({ item }) => {
-    return (
-      <PokemonCard
-        pokemon={item}
-        onPress={() => showDetails(item)}
-      />
-    );
-  };
+  const renderItem = ({ item, index, section }) => (
+    <PokemonCard
+      pokemon={item}
+      onPress={() => navigation.navigate('Edit', {
+        index: index,
+        type: section.title,
+        name: item.name,
+        number: item.number,
+      })}
+    />
+  );
 
   // Display section headings
   const renderSectionHeader = ({ section }) => {
