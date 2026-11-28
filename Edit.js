@@ -206,18 +206,13 @@ export default function Edit({ navigation, route }) {
             selectedValue={element}
             onValueChange={setElement}
           >
-            <Picker.Item
-              label="Electric"
-              value="Electric"
-            />
-            <Picker.Item
-              label="Fire"
-              value="Fire"
-            />
-            <Picker.Item
-              label="Water"
-              value="Water"
-            />
+            {datasource.map(section => (
+              <Picker.Item
+                key={section.title}
+                label={section.title}
+                value={section.title}
+              />
+            ))}
           </Picker>
         </View>
 

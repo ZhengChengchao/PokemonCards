@@ -160,23 +160,18 @@ export default function Add({ navigation }) {
           Element
         </Text>
 
-        <View style={styles.pickerContainer}>
+        <View style={styles.pickerContainer}>   
           <Picker
             selectedValue={type}
             onValueChange={setType}
           >
-            <Picker.Item
-              label="Electric"
-              value="Electric"
-            />
-            <Picker.Item
-              label="Fire"
-              value="Fire"
-            />
-            <Picker.Item
-              label="Water"
-              value="Water"
-            />
+            {datasource.map(section => (
+              <Picker.Item
+                key={section.title}
+                label={section.title}
+                value={section.title}
+              />
+            ))}
           </Picker>
         </View> 
 

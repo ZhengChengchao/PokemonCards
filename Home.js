@@ -86,6 +86,22 @@ export default function Home({navigation}) {
         </Text>
       </TouchableOpacity>
 
+      {/* Add Category Button */}
+      <TouchableOpacity
+        style={styles.addCategoryButton}
+        onPress={() => navigation.navigate('AddCategory')}
+      >
+        <FontAwesome6
+          name="folder-plus"
+          size={15}
+          color="#4169B2"
+        />
+
+        <Text style={styles.addCategoryText}>
+          ADD CATEGORY
+        </Text>
+      </TouchableOpacity>
+
       <SectionList
         sections={sections}
         renderItem={renderItem}
@@ -149,6 +165,24 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 10,
+  },
+  addCategoryButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#4169B2',
+    borderRadius: 12,
+    padding: 15,
+    marginHorizontal: 20,
+    marginBottom: 12,
+  },
+  addCategoryText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#4169B2',
     marginLeft: 10,
   },
 });
