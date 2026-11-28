@@ -18,19 +18,22 @@ The app allows users to browse, add, edit and delete Pokémon card entries organ
 ## Screenshots
 
 ### Home Screen
-![Home Screen](screenshots/home.png)
 
-### Add Pokémon
-![Add Pokémon](screenshots/add-pokemon.png)
+| Home — Part 1 | Home — Part 2 |
+|:---:|:---:|
+| <img src="screenshots/home1.png" width="230" alt="Home Screen Part 1"> | <img src="screenshots/home2.png" width="230" alt="Home Screen Part 2"> |
 
-### Edit Pokémon
-![Edit Pokémon](screenshots/edit-pokemon.png)
+### Pokémon Management
 
-### Add Category
-![Add Category](screenshots/add-category.png)
+| Add Pokémon | Edit Pokémon |
+|:---:|:---:|
+| <img src="screenshots/add-pokemon.png" width="230" alt="Add Pokémon Screen"> | <img src="screenshots/edit-pokemon.png" width="230" alt="Edit Pokémon Screen"> |
 
-### Delete Confirmation
-![Delete Confirmation](screenshots/delete-confirmation.png)
+### Category Management & Confirmation
+
+| Add Category | Delete Confirmation |
+|:---:|:---:|
+| <img src="screenshots/add-category.png" width="230" alt="Add Category Screen"> | <img src="screenshots/delete-confirmation.png" width="230" alt="Delete Confirmation"> |
 
 ## Demo Video
 
@@ -62,7 +65,15 @@ PokemonCards/
 ├── Edit.js
 ├── AddCategory.js
 ├── Data.js
-└── screenshots/
+├── screenshots/
+│   ├── home1.png
+│   ├── home2.png
+│   ├── add-pokemon.png
+│   ├── edit-pokemon.png
+│   ├── add-category.png
+│   └── delete-confirmation.png
+├── package.json
+└── README.md
 ```
 
 ## Getting Started
@@ -81,7 +92,7 @@ PokemonCards/
    npx expo start
    ```
 
-5. Open the app in an Android Emulator using `a`, or use:
+5. Open the app in an Android Emulator by pressing `a`, or run:
 
    ```bash
    npm run android
