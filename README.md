@@ -11,7 +11,7 @@ The app allows users to browse, add, edit and delete Pokémon card entries organ
 - **Edit Pokémon:** Update card details or move a Pokémon to another category.
 - **Delete Pokémon:** Remove cards with a confirmation alert.
 - **Online Card Preview:** Display Pokémon TCG card images based on card numbers.
-- **Custom Categories:** Create new collection categories and select predefined themes.
+- **Custom Categories:** Create personalised categories with predefined themes and safely delete empty custom categories.
 - **Custom HEX Colours:** Enter a HEX colour code and preview the result.
 - **React Navigation:** Navigate between Home, Add Pokémon, Edit Pokémon and Add Category screens.
 

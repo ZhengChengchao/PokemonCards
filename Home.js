@@ -1,23 +1,84 @@
-import {View, Text, SectionList, TouchableOpacity, StyleSheet, Alert} from 'react-native';
+import { useState } from 'react';
+import {
+  View,
+  Text,
+  SectionList,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import PokemonCard from './components/PokemonCard';
 import { datasource } from './Data';
 import { useIsFocused } from '@react-navigation/native';
 
-export default function Home({navigation}) {
+// Default categories cannot be deleted
+const defaultCategories = ['Electric', 'Fire', 'Water'];
 
-  // Add Pokemon button 
-  const handleAddPokemon = () => {
-    navigation.navigate('Add');
-  };
+export default function Home({ navigation }) {
 
-  // Refresh Home when returning from Add or Edit
+  // Refresh Home when returning from Add, Edit or AddCategory
   useIsFocused();
 
+  // Refresh Home after deleting a category
+  const [refresh, setRefresh] = useState(0);
+
+  // Create updated arrays for SectionList
   const sections = datasource.map(section => ({
     ...section,
     data: [...section.data],
   }));
+
+  // Add Pokemon button
+  const handleAddPokemon = () => {
+    navigation.navigate('Add');
+  };
+
+  // Delete a custom category
+  const deleteCategory = (section) => {
+
+    // Prevent deleting default categories
+    if (defaultCategories.includes(section.title)) {
+      return;
+    }
+
+    // Prevent deleting categories containing Pokemon
+    if (section.data.length > 0) {
+      Alert.alert(
+        'Category Not Empty',
+        'Please move or delete all Pokémon in this category first.'
+      );
+      return;
+    }
+
+    // Confirm deletion
+    Alert.alert(
+      'Delete Category?',
+      'Are you sure you want to delete ' + section.title + '?',
+      [
+        {
+          text: 'No',
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            const index = datasource.findIndex(
+              item => item.title === section.title
+            );
+
+            if (index !== -1) {
+              datasource.splice(index, 1);
+
+              // Refresh Home immediately
+              setRefresh(value => value + 1);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   // Display each Pokemon card
   const renderItem = ({ item, index, section }) => (
@@ -34,6 +95,8 @@ export default function Home({navigation}) {
 
   // Display section headings
   const renderSectionHeader = ({ section }) => {
+    const isDefault = defaultCategories.includes(section.title);
+
     return (
       <View
         style={[
@@ -41,20 +104,36 @@ export default function Home({navigation}) {
           { backgroundColor: section.bgColor },
         ]}
       >
-        <FontAwesome6
-          name={section.icon}
-          size={18}
-          color={section.iconColor}
-        />
+        <View style={styles.sectionTitleContainer}>
+          <FontAwesome6
+            name={section.icon}
+            size={18}
+            color={section.iconColor}
+          />
 
-        <Text
-          style={[
-            styles.sectionTitle,
-            { color: section.iconColor },
-          ]}
-        >
-          {section.title.toUpperCase()}
-        </Text>
+          <Text
+            style={[
+              styles.sectionTitle,
+              { color: section.iconColor },
+            ]}
+          >
+            {section.title.toUpperCase()}
+          </Text>
+        </View>
+
+        {/* Delete button only for custom categories */}
+        {!isDefault && (
+          <TouchableOpacity
+            style={styles.deleteCategoryButton}
+            onPress={() => deleteCategory(section)}
+          >
+            <FontAwesome6
+              name="trash"
+              size={16}
+              color={section.iconColor}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     );
   };
@@ -71,6 +150,7 @@ export default function Home({navigation}) {
         </Text>
       </View>
 
+      {/* Add Pokemon Button */}
       <TouchableOpacity
         style={styles.addButton}
         onPress={handleAddPokemon}
@@ -108,6 +188,7 @@ export default function Home({navigation}) {
         renderSectionHeader={renderSectionHeader}
         contentContainerStyle={styles.listContent}
         stickySectionHeadersEnabled={false}
+        extraData={refresh}
       />
     </View>
   );
@@ -161,11 +242,21 @@ const styles = StyleSheet.create({
     padding: 12,
     marginTop: 15,
     marginBottom: 12,
+    minHeight: 48,
+  },
+  sectionTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginLeft: 10,
+  },
+  deleteCategoryButton: {
+    position: 'absolute',
+    right: 12,
+    padding: 8,
   },
   addCategoryButton: {
     flexDirection: 'row',
