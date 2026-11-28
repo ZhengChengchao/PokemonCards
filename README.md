@@ -37,7 +37,7 @@ The app allows users to browse, add, edit and delete Pokémon card entries organ
 
 ## Demo Video
 
-[Watch the Pokémon Cards App Demo](YOUR_VIDEO_URL_HERE)
+[Watch the Pokémon Cards App Demo](https://youtu.be/XXWWWiEc8HM)
 
 ## Technologies Used
 
